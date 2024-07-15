@@ -1,8 +1,17 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { fabric } from "fabric"
 import { OBJECT_PROTOTYPE_STYLES } from "../configs/object-prototype"
+import { useAutoResize } from "./use-auto-resize"
 
 export const useEditor = () => {
+
+    const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
+    const [container, setContainer] = useState<HTMLDivElement | null>(null)
+
+    useAutoResize({
+        canvas,
+        container
+    })
 
     const init = useCallback(({
         initialCanvas,
@@ -33,6 +42,9 @@ export const useEditor = () => {
         initialCanvas.add(initialWorkSpace)
         initialCanvas.centerObject(initialWorkSpace)
         initialCanvas.clipPath = initialWorkSpace
+
+        setCanvas(initialCanvas)
+        setContainer(initialContainer)
 
         const test = new fabric.Rect({
             height: 100,
