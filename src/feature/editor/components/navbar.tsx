@@ -8,8 +8,22 @@ import { Logo } from "@/feature/editor/components/logo"
 import { ChevronDown, Download, MousePointerClick, Redo2, Undo2 } from "lucide-react"
 import { BsCloudCheck } from "react-icons/bs"
 import { CiFileOn } from "react-icons/ci"
+import { ActiveTool, Editor } from "../types"
+import { cn } from "@/lib/utils"
 
-const Navbar = () => {
+interface NavbarProps {
+    // id: string;
+    // editor: Editor | undefined;
+    activeTool: ActiveTool;
+    onChangeActiveTool: (tool: ActiveTool) => void;
+};
+
+const Navbar = ({
+    // id,
+    // editor,
+    activeTool,
+    onChangeActiveTool,
+}: NavbarProps) => {
     return <nav className="w-full flex items-center p-4 h-[68px] gap-x-8 border-b lg:pl-[34px]">
         <Logo />
         <div className="w-full flex items-center gap-x-1 h-full">
@@ -40,8 +54,8 @@ const Navbar = () => {
                 <Button
                     variant="ghost"
                     size="icon"
-                // onClick={() => onChangeActiveTool("select")}
-                // className={cn(activeTool === "select" && "bg-gray-100")}
+                    onClick={() => onChangeActiveTool("select")}
+                    className={cn(activeTool === "select" && "bg-gray-100")}
                 >
                     <MousePointerClick className="size-4" />
                 </Button>
