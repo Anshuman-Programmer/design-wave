@@ -11,13 +11,13 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ShapeSidebarProps {
-  // editor: Editor | undefined;
+  editor: Editor | undefined;
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
 };
 
 export const ShapeSidebar = ({
-  // editor,
+  editor,
   activeTool,
   onChangeActiveTool,
 }: ShapeSidebarProps) => {
@@ -39,34 +39,28 @@ export const ShapeSidebar = ({
       <ScrollArea>
         <div className="grid grid-cols-3 gap-4 p-4">
           <ShapeTool
-            // onClick={() => editor?.addCircle()}
-            onClick={() => { }}
+            onClick={() => editor?.addCircle()}
             icon={FaCircle}
           />
           <ShapeTool
-            // onClick={() => editor?.addSoftRectangle()}
-            onClick={() => { }}
+            onClick={() => editor?.addSoftRectangle()}
             icon={FaSquare}
           />
           <ShapeTool
-            // onClick={() => editor?.addRectangle()}
-            onClick={() => { }}
+            onClick={() => editor?.addRectangle()}
             icon={FaSquareFull}
           />
           <ShapeTool
-            // onClick={() => editor?.addTriangle()}
-            onClick={() => { }}
+            onClick={() => editor?.addTriangle()}
             icon={IoTriangle}
           />
           <ShapeTool
-            // onClick={() => editor?.addInverseTriangle()}
-            onClick={() => { }}
+            onClick={() => editor?.addInverseTriangle()}
             icon={IoTriangle}
             iconClassName="rotate-180"
           />
           <ShapeTool
-            // onClick={() => editor?.addDiamond()}
-            onClick={() => { }}
+            onClick={() => editor?.addDiamond()}
             icon={FaDiamond}
           />
         </div>
