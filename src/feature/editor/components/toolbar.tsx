@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { ActiveTool, Editor } from '../types';
 import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { BsBorderWidth } from 'react-icons/bs';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import { RxTransparencyGrid } from "react-icons/rx";
+import { isTextType } from '../utils';
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -21,6 +21,10 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
     if (editor?.selectedObjects?.length === 0) return (
         <div className='shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2' />
     )
+
+    const selectedObjectType = editor?.selectedObjects[0].type
+
+    const isText = isTextType(selectedObjectType)
 
     return (
         <div className='shrink-0 h-[56px] border-b bg-white w-full flex items-center overflow-x-auto z-[49] p-2 gap-x-2'>
@@ -41,7 +45,7 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
                     </Button>
                 </Hint>
             </div>
-            <div className="flex items-center h-full justify-center">
+            {!isText && <div className="flex items-center h-full justify-center">
                 <Hint label="Border Color" side="bottom" sideOffset={5}>
                     <Button
                         onClick={() => onChangeActiveTool("stroke-color")}
@@ -57,8 +61,8 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
                         />
                     </Button>
                 </Hint>
-            </div>
-            <div className="flex items-center h-full justify-center">
+            </div>}
+            {!isText && <div className="flex items-center h-full justify-center">
                 <Hint label="Border Width" side="bottom" sideOffset={5}>
                     <Button
                         onClick={() => onChangeActiveTool("stroke-width")}
@@ -71,7 +75,7 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
                         <BsBorderWidth className='size-5' />
                     </Button>
                 </Hint>
-            </div>
+            </div>}
             <div className="flex items-center h-full justify-center">
                 <Hint label="Brind Forward" side="bottom" sideOffset={5}>
                     <Button

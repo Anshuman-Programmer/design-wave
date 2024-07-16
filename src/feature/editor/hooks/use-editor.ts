@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react"
 import { fabric } from "fabric"
 import { useAutoResize } from "./use-auto-resize"
-import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookProps, FILL_COLOR, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, TRIANGLE_OPTIONS } from "../types"
+import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookProps, FILL_COLOR, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, TEXT_OPTIONS, TRIANGLE_OPTIONS } from "../types"
 import { useCanvasEvents } from "./use-canvas-Events"
 import { isTextType } from "../utils"
 
@@ -157,6 +157,15 @@ const buildEditor = ({
                 object.set({ strokeDashArray: value });
             });
             canvas.renderAll();
+        },
+        addText: (value, options) => {
+            const object = new fabric.Textbox(value, {
+                ...TEXT_OPTIONS,
+                fill: fillColor,
+                ...options,
+            });
+
+            addToCanvas(object);
         },
         addCircle: () => {
             const object = new fabric.Circle(CIRCLE_OPTIONS)
