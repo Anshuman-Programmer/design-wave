@@ -4,6 +4,8 @@ import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { BsBorderWidth } from 'react-icons/bs';
+import { ArrowDown, ArrowUp } from 'lucide-react';
+import { RxTransparencyGrid } from "react-icons/rx";
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -67,6 +69,42 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
                         )}
                     >
                         <BsBorderWidth className='size-5' />
+                    </Button>
+                </Hint>
+            </div>
+            <div className="flex items-center h-full justify-center">
+                <Hint label="Brind Forward" side="bottom" sideOffset={5}>
+                    <Button
+                        onClick={editor?.bringForward}
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowUp className='size-5' />
+                    </Button>
+                </Hint>
+            </div>
+            <div className="flex items-center h-full justify-center">
+                <Hint label="Send Backward" side="bottom" sideOffset={5}>
+                    <Button
+                        onClick={editor?.sendBackwards}
+                        size="icon"
+                        variant="ghost"
+                    >
+                        <ArrowDown className='size-5' />
+                    </Button>
+                </Hint>
+            </div>
+            <div className="flex items-center h-full justify-center">
+                <Hint label="Opacity" side="bottom" sideOffset={5}>
+                    <Button
+                        onClick={() => onChangeActiveTool("opacity")}
+                        size="icon"
+                        variant="ghost"
+                        className={cn(
+                            activeTool === "opacity" && "bg-gray-100"
+                        )}
+                    >
+                        <RxTransparencyGrid className='size-5' />
                     </Button>
                 </Hint>
             </div>

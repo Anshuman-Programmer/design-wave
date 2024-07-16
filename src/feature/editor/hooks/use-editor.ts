@@ -104,6 +104,24 @@ const buildEditor = ({
 
             return value;
         },
+        getActiveOpacity: () => {
+            const selectedObject = selectedObjects[0];
+
+            if (!selectedObject) {
+                return 1;
+            }
+
+            const value = selectedObject.get("opacity") || 1;
+
+            return value;
+        },
+        changeOpacity: (value: number) => {
+            // setFillColor(value);
+            canvas.getActiveObjects().forEach((object) => {
+                object.set({ opacity: value });
+            });
+            canvas.renderAll();
+        },
         changeFillColor: (value: string) => {
             setFillColor(value);
             canvas.getActiveObjects().forEach((object) => {
