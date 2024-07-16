@@ -9,6 +9,7 @@ import Toolbar from "@/feature/editor/components/toolbar";
 import Footer from "./footer";
 import { ActiveTool } from "../types";
 import { ShapeSidebar } from "./shape-sidebar";
+import { FillColorSidebar } from "./fill-color-sidebar";
 
 const Editor = () => {
 
@@ -56,8 +57,9 @@ const Editor = () => {
             <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
                 <Sidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                 <ShapeSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
+                <FillColorSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
-                    <Toolbar />
+                    <Toolbar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                     <div ref={containerRef} className="flex-1 h-full bg-muted">
                         <canvas ref={canvasRef} />
                     </div>
