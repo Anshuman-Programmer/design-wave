@@ -2,10 +2,11 @@ import { Dispatch, SetStateAction, useEffect } from "react"
 
 interface UseCanvasEventsProps {
     canvas: fabric.Canvas | null,
-    setSelectedObjects: Dispatch<SetStateAction<fabric.Object[]>>
+    setSelectedObjects: Dispatch<SetStateAction<fabric.Object[]>>,
+    clearSelectionCallback?: () => void
 }
 
-export const useCanvasEvents = ({ canvas, setSelectedObjects }: UseCanvasEventsProps) => {
+export const useCanvasEvents = ({ canvas, setSelectedObjects, clearSelectionCallback }: UseCanvasEventsProps) => {
     useEffect(() => {
         if (canvas) {
             canvas.on("selection:created", (e) => {
@@ -16,7 +17,8 @@ export const useCanvasEvents = ({ canvas, setSelectedObjects }: UseCanvasEventsP
             })
             canvas.on("selection:cleared", () => {
                 setSelectedObjects([])
+                clearSelectionCallback?.()
             })
         }
-    }, [canvas])
+    }, [canvas, clearSelectionCallback])
 }

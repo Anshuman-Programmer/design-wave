@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react"
 import { fabric } from "fabric"
 import { useAutoResize } from "./use-auto-resize"
-import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, FILL_COLOR, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_WIDTH, TRIANGLE_OPTIONS } from "../types"
+import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookProps, FILL_COLOR, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_WIDTH, TRIANGLE_OPTIONS } from "../types"
 import { useCanvasEvents } from "./use-canvas-Events"
 import { isTextType } from "../utils"
 
@@ -50,6 +50,28 @@ const buildEditor = ({
 
             // Currently, gradients & patterns are not supported
             return value as string;
+        },
+        getActiveStrokeColor: () => {
+            const selectedObject = selectedObjects[0];
+
+            if (!selectedObject) {
+                return strokeColor;
+            }
+
+            const value = selectedObject.get("stroke") || strokeColor;
+
+            return value;
+        },
+        getActiveStrokeWidth: () => {
+            const selectedObject = selectedObjects[0];
+
+            if (!selectedObject) {
+                return strokeWidth;
+            }
+
+            const value = selectedObject.get("strokeWidth") || strokeWidth;
+
+            return value;
         },
         changeFillColor: (value: string) => {
             setFillColor(value);
@@ -166,7 +188,10 @@ const buildEditor = ({
     } as Editor)
 } 
 
-export const useEditor = () => {
+
+export const useEditor = ({
+    clearSelectionCallback
+}: EditorHookProps) => {
 
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
@@ -182,7 +207,8 @@ export const useEditor = () => {
 
     useCanvasEvents({
         canvas,
-        setSelectedObjects
+        setSelectedObjects,
+        clearSelectionCallback
     })
 
     const editor = useMemo(() => {
