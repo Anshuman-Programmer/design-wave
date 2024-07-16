@@ -3,6 +3,7 @@ import { ActiveTool, Editor } from '../types';
 import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { BsBorderWidth } from 'react-icons/bs';
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -52,6 +53,20 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
                             className="rounded-sm size-6 border-2 bg-white"
                             style={{ borderColor: strokeColor }}
                         />
+                    </Button>
+                </Hint>
+            </div>
+            <div className="flex items-center h-full justify-center">
+                <Hint label="Border Width" side="bottom" sideOffset={5}>
+                    <Button
+                        onClick={() => onChangeActiveTool("stroke-width")}
+                        size="icon"
+                        variant="ghost"
+                        className={cn(
+                            activeTool === "stroke-width" && "bg-gray-100"
+                        )}
+                    >
+                        <BsBorderWidth className='size-5' />
                     </Button>
                 </Hint>
             </div>
