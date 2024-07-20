@@ -1,4 +1,4 @@
-import { ActiveTool, Editor, FONT_WEIGHT } from '../types';
+import { ActiveTool, Editor, FONT_SIZE, FONT_WEIGHT } from '../types';
 import { Hint } from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -8,6 +8,7 @@ import { RxTransparencyGrid } from "react-icons/rx";
 import { isTextType } from '../utils';
 import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from 'react-icons/fa';
 import { useState } from 'react';
+import { FontSizeInput } from './font-size-input';
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -29,6 +30,7 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
     const initialFontLinethrough = editor?.getActiveFontLinethrough()
     const initialFontUnderline = editor?.getActiveFontUnderline()
     const initialTextAlign = editor?.getActiveTextAlign()
+    const initialFontSize = editor?.getActiveFontSize() || FONT_SIZE
 
     const isText = isTextType(selectedObjectType)
 
@@ -41,6 +43,7 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
         fontLinethrough: initialFontLinethrough,
         textAlign: initialTextAlign,
         fontUnderline: initialFontUnderline,
+        fontSize: initialFontSize
     })
 
     const toggleBold = () => {
@@ -100,10 +103,24 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
     };
 
     const onChangeTextAlign = (value: string) => {
+        if (!selectedObject) {
+            return;
+        }
         editor?.changeTextAlign(value);
         setProperties((current) => ({
             ...current,
             textAlign: value,
+        }));
+    }
+
+    const onChangeFontSize = (value: number) => {
+        if (!selectedObject) {
+            return;
+        }
+        editor?.changeFontSize(value);
+        setProperties((current) => ({
+            ...current,
+            fontSize: value,
         }));
     }
 
@@ -291,6 +308,14 @@ function Toolbar({ editor, activeTool, onChangeActiveTool }: ToolbarProps) {
                             <AlignRight className="size-4" />
                         </Button>
                     </Hint>
+                </div>
+            )}
+            {isText && (
+                <div className="flex items-center h-full justify-center">
+                    <FontSizeInput
+                        value={properties.fontSize}
+                        onChange={onChangeFontSize}
+                    />
                 </div>
             )}
             <div className="flex items-center h-full justify-center">

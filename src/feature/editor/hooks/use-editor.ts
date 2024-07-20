@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react"
 import { fabric } from "fabric"
 import { useAutoResize } from "./use-auto-resize"
-import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookProps, FILL_COLOR, FONT_FAMILY, FONT_WEIGHT, fonts, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, TEXT_OPTIONS, TRIANGLE_OPTIONS } from "../types"
+import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookProps, FILL_COLOR, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, fonts, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, TEXT_OPTIONS, TRIANGLE_OPTIONS } from "../types"
 import { useCanvasEvents } from "./use-canvas-Events"
 import { isTextType } from "../utils"
 import { ITextOptions } from "fabric/fabric-impl"
@@ -184,6 +184,17 @@ const buildEditor = ({
 
             return value;
         },
+        getActiveFontSize: () => {
+            const selectedObject = selectedObjects[0];
+
+            if (!selectedObject) {
+                return FONT_SIZE;
+            }
+            // @ts-ignore
+            const value = selectedObject.get("fontSize") || FONT_SIZE;
+
+            return value;
+        },
         changeOpacity: (value: number) => {
             // setFillColor(value);
             canvas.getActiveObjects().forEach((object) => {
@@ -239,6 +250,16 @@ const buildEditor = ({
                     // @ts-ignore
                     // Faulty TS library, linethrough exists.
                     object.set({ textAlign: value });
+                }
+            });
+            canvas.renderAll();
+        },
+        changeFontSize: (value: number) => {
+            canvas.getActiveObjects().forEach((object) => {
+                if (isTextType(object.type)) {
+                    // @ts-ignore
+                    // Faulty TS library, linethrough exists.
+                    object.set({ fontSize: value });
                 }
             });
             canvas.renderAll();
