@@ -61,7 +61,7 @@ export const StrokeWidthSidebar = ({
               value={[widthValue]}
               onValueChange={(values) => onChangeStrokeWidth(values[0])}
             />
-            <Input type="number" className="max-w-10 border outline px-2 text-center" value={widthValue} onChange={(e) => onChangeStrokeWidth(Number(e.target.value))} />
+            {widthValue > 0 && <Input type="number" className="max-w-10 border outline px-2 text-center" value={widthValue} onChange={(e) => onChangeStrokeWidth(Number(e.target.value))} />}
           </div>
 
         </div>
