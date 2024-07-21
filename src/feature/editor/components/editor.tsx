@@ -16,6 +16,7 @@ import { OpacitySidebar } from "./opacity-sidebar";
 import { TextSidebar } from "./text-sidebar";
 import { FontSidebar } from "./font-sidebar";
 import { ImageSidebar } from "./image-sidebar";
+import { FilterSidebar } from "./filter-sidebar";
 
 const Editor = () => {
 
@@ -76,6 +77,7 @@ const Editor = () => {
                 <TextSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                 <FontSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                 {activeTool === "images" && <ImageSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
+                {activeTool === "filter" && <FilterSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
                     <Toolbar
                         editor={editor}

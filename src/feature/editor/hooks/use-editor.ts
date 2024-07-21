@@ -3,7 +3,7 @@ import { fabric } from "fabric"
 import { useAutoResize } from "./use-auto-resize"
 import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookProps, FILL_COLOR, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, fonts, OBJECT_PROTOTYPE_STYLES, RECTANGLE_OPTIONS, STROKE_COLOR, STROKE_DASH_ARRAY, STROKE_WIDTH, TEXT_OPTIONS, TRIANGLE_OPTIONS } from "../types"
 import { useCanvasEvents } from "./use-canvas-Events"
-import { isTextType } from "../utils"
+import { createFilter, isTextType } from "../utils"
 import { ITextOptions } from "fabric/fabric-impl"
 
 const buildEditor = ({
@@ -306,6 +306,20 @@ const buildEditor = ({
                 object.set({ strokeDashArray: value });
             });
             canvas.renderAll();
+        },
+        changeImageFilter: (value: string) => {
+            const objects = canvas.getActiveObjects();
+            objects.forEach((object) => {
+                if (object.type === "image") {
+                    const imageObject = object as fabric.Image;
+
+                    const effect = createFilter(value);
+
+                    imageObject.filters = effect ? [effect] : [];
+                    imageObject.applyFilters();
+                    canvas.renderAll();
+                }
+            });
         },
         addImage: (value: string) => {
             fabric.Image.fromURL(
