@@ -44,6 +44,13 @@ const buildEditor = ({
     };
 
     return ({
+        delete: () => {
+            canvas.getActiveObjects().forEach((object) => {
+                canvas.remove(object);
+            });
+            canvas.discardActiveObject()
+            canvas.renderAll()
+        },
         bringForward: () => {
             canvas.getActiveObjects().forEach((object) => {
                 canvas.bringForward(object);
@@ -299,6 +306,22 @@ const buildEditor = ({
                 object.set({ strokeDashArray: value });
             });
             canvas.renderAll();
+        },
+        addImage: (value: string) => {
+            fabric.Image.fromURL(
+                value,
+                (image) => {
+                    const workspace = getWorkspace();
+
+                    image.scaleToWidth(workspace?.width || 0);
+                    image.scaleToHeight(workspace?.height || 0);
+
+                    addToCanvas(image);
+                },
+                {
+                    crossOrigin: "anonymous",
+                },
+            );
         },
         addText: (value, options) => {
             const object = new fabric.Textbox(value, {
