@@ -18,27 +18,11 @@ import { FontSidebar } from "./font-sidebar";
 import { ImageSidebar } from "./image-sidebar";
 import { FilterSidebar } from "./filter-sidebar";
 import { AiSidebar } from "./ai-sidebar";
+import { DrawSidebar } from "./draw-sidebar";
 
 const Editor = () => {
 
     const [activeTool, setActiveTool] = useState<ActiveTool>("select");
-
-    const onChangeActiveTool = useCallback((tool: ActiveTool) => {
-
-        if (tool === "draw") {
-            // editor?.enableDrawingMode();
-        }
-
-        if (activeTool === "draw") {
-            // editor?.disableDrawingMode();
-        }
-
-        if (tool === activeTool) {
-            return setActiveTool("select");
-        }
-
-        setActiveTool(tool);
-    }, [activeTool])
 
     const onClearSelection = useCallback(() => {
         if (selectionDependentTools.includes(activeTool)) setActiveTool("select")
@@ -47,6 +31,23 @@ const Editor = () => {
     const { init, editor } = useEditor({
         clearSelectionCallback: onClearSelection
     });
+
+    const onChangeActiveTool = useCallback((tool: ActiveTool) => {
+
+        if (tool === "draw") {
+            editor?.enableDrawingMode();
+        }
+
+        if (activeTool === "draw") {
+            editor?.disableDrawingMode();
+        }
+
+        if (tool === activeTool) {
+            return setActiveTool("select");
+        }
+
+        setActiveTool(tool);
+    }, [activeTool, editor])
 
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -80,6 +81,7 @@ const Editor = () => {
                 {activeTool === "images" && <ImageSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 {activeTool === "filter" && <FilterSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 {activeTool === "ai" && <AiSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
+                {activeTool === "draw" && <DrawSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
                     <Toolbar
                         editor={editor}

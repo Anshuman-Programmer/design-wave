@@ -5,9 +5,12 @@ import { BuildEditorProps, CIRCLE_OPTIONS, DIAMOND_OPTIONS, Editor, EditorHookPr
 import { useCanvasEvents } from "./use-canvas-Events"
 import { createFilter, isTextType } from "../utils"
 import { ITextOptions } from "fabric/fabric-impl"
+import { useClipboard } from "./use-clipboard"
 
 const buildEditor = ({
     canvas,
+    copy,
+    paste,
     fillColor,
     setFillColor,
     strokeColor,
@@ -44,6 +47,18 @@ const buildEditor = ({
     };
 
     return ({
+        enableDrawingMode: () => {
+            canvas.discardActiveObject()
+            canvas.renderAll()
+            canvas.isDrawingMode = true
+            canvas.freeDrawingBrush.width = strokeWidth
+            canvas.freeDrawingBrush.color = strokeColor
+        },
+        disableDrawingMode: () => {
+            canvas.isDrawingMode = false
+        },
+        onCopy: () => copy(),
+        onPaste: () => paste(),
         delete: () => {
             canvas.getActiveObjects().forEach((object) => {
                 canvas.remove(object);
@@ -446,6 +461,8 @@ export const useEditor = ({
     const [strokeDashArray, setStrokeDashArray] = useState<number[]>(STROKE_DASH_ARRAY)
     const [fontFamily, setFontFamily] = useState(FONT_FAMILY)
 
+    const { copy, paste } = useClipboard({ canvas: canvas })
+
     useAutoResize({
         canvas,
         container
@@ -459,6 +476,8 @@ export const useEditor = ({
 
     const editor = useMemo(() => {
         if (canvas) return buildEditor({
+            copy,
+            paste,
             canvas,
             fillColor,
             setFillColor,
@@ -473,7 +492,7 @@ export const useEditor = ({
             setFontFamily,
         } as BuildEditorProps)
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, fontFamily])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, fontFamily, copy, paste])
 
     const init = useCallback(({
         initialCanvas,
