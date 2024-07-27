@@ -94,7 +94,7 @@ const Editor = () => {
                     <div ref={containerRef} className="flex-1 h-full bg-muted">
                         <canvas ref={canvasRef} />
                     </div>
-                    <Footer />
+                    <Footer editor={editor} />
                 </main>
             </div>
 
