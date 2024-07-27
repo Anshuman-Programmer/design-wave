@@ -21,7 +21,8 @@ const buildEditor = ({
     strokeDashArray,
     setStrokeDashArray,
     fontFamily,
-    setFontFamily
+    setFontFamily,
+    autoZoom
 }: BuildEditorProps): Editor => {
 
     const getWorkspace = () => {
@@ -47,6 +48,17 @@ const buildEditor = ({
     };
 
     return ({
+        getWorkspace,
+        changeSize: (value: { width: number, height: number }) => {
+            const workspace = getWorkspace()
+            workspace?.set(value)
+            autoZoom()
+        },
+        changeBackground: (value) => {
+            const workspace = getWorkspace()
+            workspace?.set({ fill: value })
+            canvas.renderAll()
+        },
         enableDrawingMode: () => {
             canvas.discardActiveObject()
             canvas.renderAll()
@@ -463,7 +475,7 @@ export const useEditor = ({
 
     const { copy, paste } = useClipboard({ canvas: canvas })
 
-    useAutoResize({
+    const { autoZoom } = useAutoResize({
         canvas,
         container
     })
@@ -490,9 +502,10 @@ export const useEditor = ({
             setStrokeDashArray,
             fontFamily,
             setFontFamily,
+            autoZoom,
         } as BuildEditorProps)
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, fontFamily, copy, paste])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, fontFamily, copy, paste, autoZoom])
 
     const init = useCallback(({
         initialCanvas,

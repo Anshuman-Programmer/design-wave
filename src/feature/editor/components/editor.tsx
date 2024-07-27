@@ -19,6 +19,7 @@ import { ImageSidebar } from "./image-sidebar";
 import { FilterSidebar } from "./filter-sidebar";
 import { AiSidebar } from "./ai-sidebar";
 import { DrawSidebar } from "./draw-sidebar";
+import { SettingsSidebar } from "./settings-sidebar";
 
 const Editor = () => {
 
@@ -82,6 +83,7 @@ const Editor = () => {
                 {activeTool === "filter" && <FilterSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 {activeTool === "ai" && <AiSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 {activeTool === "draw" && <DrawSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
+                {activeTool === "settings" && <SettingsSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />}
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
                     <Toolbar
                         editor={editor}
